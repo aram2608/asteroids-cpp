@@ -38,6 +38,7 @@ void Game::update() {
 
 // Function to spawn asteroids to screen
 void Game::spawn_asteroid() {
+    // We get
     double current_time = GetTime();
     // We first determine the spawn side
     int side = GetRandomValue(0, 3);
@@ -95,6 +96,7 @@ void Game::spawn_asteroid() {
         break;
     }
 
+    // We track our spawn time and make sure it has at least passed the spawn interval
     if (current_time - last_asteroid_spawn_time >= asteroid_spawn_interval) {
         // We set our spawn probability at 20%
         if (GetRandomValue(1, 10) <= 2) {
@@ -102,6 +104,7 @@ void Game::spawn_asteroid() {
             // asteroids
             asteroids.emplace_back(spawn_pos, initial_vel);
         }
+        // We then update the game time
         last_asteroid_spawn_time = GetTime();
     }
 }

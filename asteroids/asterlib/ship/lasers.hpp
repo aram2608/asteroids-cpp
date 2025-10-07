@@ -15,6 +15,8 @@ struct Lasers {
     int speed;
     int screen_w;
     int screen_h;
+    double life_span;
+    double lived_time;
     float rotation;
     float heading_x;
     float heading_y;

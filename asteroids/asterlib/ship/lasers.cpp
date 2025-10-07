@@ -5,6 +5,8 @@ Lasers::Lasers(Vector2 pos, float heading_x, float heading_y, float rotation)
     speed = 250;
     size = Vector2{4, 15};
     active = true;
+    life_span = 300;
+    lived_time = 0;
     screen_w = GetScreenWidth();
     screen_h = GetScreenHeight();
 }
@@ -22,6 +24,7 @@ void Lasers::draw() {
 void Lasers::update() {
     // If the laser is active
     if (active) {
+        lived_time += 1;
         // We first get the screen's frame time
         float delta = GetFrameTime();
 
@@ -42,6 +45,10 @@ void Lasers::update() {
         // We can then apply the changes to the x and y positions
         pos.x += heading_x * speed * delta;
         pos.y += heading_y * speed * delta;
+
+        if (lived_time == life_span) {
+            active = false;
+        }
     }
 }
 

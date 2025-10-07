@@ -4,7 +4,7 @@ Ship::Ship(Vector2 pos, int screen_w, int screen_h)
     : pos(pos), screen_w(screen_w), screen_h(screen_h) {
     size = Vector2{30, 40};
     max_speed = 250.0f;
-    rotation_speed = 100.0f;
+    rotation_speed = 200.0f;
     decel = 2000.0f;
     flt_speed = 40.0f;
     velocity = Vector2{0, 0};
