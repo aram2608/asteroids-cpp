@@ -1,17 +1,19 @@
 #include "asteroids/asteroid.hpp"
 
-Asteroid::Asteroid(Vector2 center, Vector2 heading)
-    : center(center), heading(heading) {
+Asteroid::Asteroid(Vector2 center, Vector2 velocity)
+    : center(center), velocity(velocity) {
     radius = 20;
-    speed = 100;
     active = true;
     screen_w = GetScreenWidth();
     screen_h = GetScreenHeight();
 }
 
+// Function to draw asteroids to screen
 void Asteroid::draw() {
     DrawCircle(center.x, center.y, radius, Color{255, 255, 255, 255});
 }
+
+// Function to update the asteroids position
 void Asteroid::update() {
     // If the laser is active
     if (active) {
@@ -33,7 +35,7 @@ void Asteroid::update() {
             center.y = screen_w;
         }
         // We can then apply the changes to the x and y positions
-        center.x += heading.x * speed * delta;
-        center.y += heading.y * speed * delta;
+        center.x += velocity.x * delta;
+        center.y += velocity.y * delta;
     }
 }

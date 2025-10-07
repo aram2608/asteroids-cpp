@@ -1,5 +1,6 @@
 add_library(asterlib
     asterlib/game/game.cpp
+    asterlib/asteroids/asteroid.cpp
     asterlib/ship/ship.cpp
     asterlib/ship/lasers.cpp
 )

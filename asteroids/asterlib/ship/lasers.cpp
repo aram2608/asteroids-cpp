@@ -2,13 +2,14 @@
 
 Lasers::Lasers(Vector2 pos, float heading_x, float heading_y, float rotation)
     : pos(pos), heading_x(heading_x), heading_y(heading_y), rotation(rotation) {
-    speed = 500;
+    speed = 250;
     size = Vector2{4, 15};
     active = true;
     screen_w = GetScreenWidth();
     screen_h = GetScreenHeight();
 }
 
+// Function to draw the lasers to the screen
 void Lasers::draw() {
     if (active) {
         DrawRectanglePro(Rectangle{pos.x, pos.y, size.x, size.y},
