@@ -1,6 +1,7 @@
 add_library(asterlib
     asterlib/game/game.cpp
     asterlib/ship/ship.cpp
+    asterlib/ship/lasers.cpp
 )
 
 find_package(raylib 3.0 REQUIRED)

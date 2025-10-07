@@ -1,20 +1,46 @@
 #include "ship/lasers.hpp"
 
-Lasers::Lasers(Vector2 pos, float rotation) : pos(pos), rotation(rotation) {
-    speed = 20;
-    size = Vector2{15, 4};
+Lasers::Lasers(Vector2 pos, float heading_x, float heading_y, float rotation)
+    : pos(pos), heading_x(heading_x), heading_y(heading_y), rotation(rotation) {
+    speed = 500;
+    size = Vector2{4, 15};
     active = true;
 }
 
 void Lasers::draw() {
     if (active) {
-        DrawRectangle(pos.x, pos.y, size.x, size.y, Color{255, 255, 255, 255});
+        DrawRectanglePro(Rectangle{pos.x, pos.y, size.x, size.y},
+                         Vector2{size.x / 2, size.y / 2}, rotation,
+                         Color{255, 255, 255, 255});
     }
 }
 
+// Function to update a lasers positon
 void Lasers::update() {
+    // If the laser is active
     if (active) {
-        float rot_rads = rotation * DEG2RAD;
+        // We first get the screen width and height as well as the games frame time
+        float delta = GetFrameTime();
+        int screen_w = GetScreenWidth();
+        int screen_h = GetScreenHeight();
+
+        // We then bounds check for the horizontal position
+        if (pos.x > screen_w) {
+            pos.x = 0;
+        }
+        if (pos.x < 0) {
+            pos.x = screen_w;
+        }
+        // We then bounds check for the vertical position
+        if (pos.y > screen_h) {
+            pos.y = 0;
+        }
+        if (pos.y < 0) {
+            pos.y = screen_w;
+        }
+        // We can then apply the changes to the x and y positions
+        pos.x += heading_x * speed * delta;
+        pos.y += heading_y * speed * delta;
     }
 }
 
