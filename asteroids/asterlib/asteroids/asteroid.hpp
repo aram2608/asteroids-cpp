@@ -7,6 +7,7 @@ struct Asteroid {
     Asteroid(Vector2 center, Vector2 velocity);
     void draw();
     void update();
+    Rectangle get_rect();
 
     Vector2 center;
     Vector2 velocity;

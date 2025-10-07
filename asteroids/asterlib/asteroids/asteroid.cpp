@@ -39,3 +39,8 @@ void Asteroid::update() {
         center.y += velocity.y * delta;
     }
 }
+
+// Function to return the Rectangle for the asteroid
+Rectangle Asteroid::get_rect() {
+    return Rectangle{center.x, center.y, (float)radius * 2, (float)radius * 2};
+}

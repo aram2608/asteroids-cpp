@@ -5,6 +5,8 @@ Game::Game(int window_width, int window_height)
       ship(Vector2{(float)window_width / 2, (float)window_height / 2},
            window_width, window_height) {
     asteroid_limit = 10;
+    asteroid_spawn_interval = 0.50f;
+    last_asteroid_spawn_time = 0.0f;
 }
 
 // Function to draw game objects to screen
@@ -20,6 +22,7 @@ void Game::draw() {
 
 // Function to update the game loop
 void Game::update() {
+    resolve_collisions();
     ship.update();
     delete_lasers();
     if (asteroids.size() <= asteroid_limit) {
@@ -33,7 +36,9 @@ void Game::update() {
     }
 }
 
+// Function to spawn asteroids to screen
 void Game::spawn_asteroid() {
+    double current_time = GetTime();
     // We first determine the spawn side
     int side = GetRandomValue(0, 3);
     // We initialize an empty spawn position and velocity
@@ -90,15 +95,20 @@ void Game::spawn_asteroid() {
         break;
     }
 
-    // We set our spawn probability at 75%
-    if (GetRandomValue(1, 4) <= 3) {
-        // We build the asteroid in place and add it to the vector of asteroids
-        asteroids.emplace_back(spawn_pos, initial_vel);
+    if (current_time - last_asteroid_spawn_time >= asteroid_spawn_interval) {
+        // We set our spawn probability at 20%
+        if (GetRandomValue(1, 10) <= 2) {
+            // We build the asteroid in place and add it to the vector of
+            // asteroids
+            asteroids.emplace_back(spawn_pos, initial_vel);
+        }
+        last_asteroid_spawn_time = GetTime();
     }
 }
 
+// Function to erase lasers from the vector
 void Game::delete_lasers() {
-    for(auto it = ship.lasers.begin(); it != ship.lasers.end();) {
+    for (auto it = ship.lasers.begin(); it != ship.lasers.end();) {
         if (!it->active) {
             it = ship.lasers.erase(it);
         } else {
@@ -107,4 +117,19 @@ void Game::delete_lasers() {
     }
 }
 
-void Game::resolve_collisions() {}
+// Function to resolve laser/asteroid collisions
+void Game::resolve_collisions() {
+    for (auto &laser : ship.lasers) {
+        auto it = asteroids.begin();
+
+        while (it != asteroids.end()) {
+            if (CheckCollisionRecs(it->get_rect(), laser.get_rect())) {
+                it = asteroids.erase(it);
+                laser.active = false;
+
+            } else {
+                ++it;
+            }
+        }
+    }
+}

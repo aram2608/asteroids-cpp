@@ -19,6 +19,8 @@ class Game {
     int window_width;
     int window_height;
     int asteroid_limit;
+    float asteroid_spawn_interval;
+    float last_asteroid_spawn_time;
     Ship ship;
     std::vector<Asteroid> asteroids;
 };
