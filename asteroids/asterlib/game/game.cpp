@@ -1,5 +1,4 @@
 #include "game/game.hpp"
-#include "game.hpp"
 
 Game::Game(int window_width, int window_height)
     : window_width(window_width), window_height(window_height),
