@@ -46,6 +46,7 @@ void Lasers::update() {
         pos.x += heading_x * speed * delta;
         pos.y += heading_y * speed * delta;
 
+        // We despawn the laser after its reached its life span
         if (lived_time == life_span) {
             active = false;
         }

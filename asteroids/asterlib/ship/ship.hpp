@@ -16,6 +16,7 @@ struct Ship {
     void keyboard(float delta);
     void bounds_check();
     void fire_laser(float heading_x, float heading_y);
+    Rectangle get_rect();
 
     float max_speed;
     float rotation_speed;

@@ -12,7 +12,7 @@ int main() {
     Game game = Game(WINDOW_WIDTH, WINDOW_HEIGHT);
     while (!WindowShouldClose()) {
 
-        game.update();
+        game.update_loop();
 
         BeginDrawing();
         ClearBackground(Color{0, 0, 0, 255});

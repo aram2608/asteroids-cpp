@@ -1,4 +1,5 @@
 #include "game/game.hpp"
+#include "game.hpp"
 
 Game::Game(int window_width, int window_height)
     : window_width(window_width), window_height(window_height),
@@ -7,6 +8,8 @@ Game::Game(int window_width, int window_height)
     asteroid_limit = 10;
     asteroid_spawn_interval = 0.50f;
     last_asteroid_spawn_time = 0.0f;
+    lives = 3;
+    state = GameState::INACTIVE;
 }
 
 // Function to draw game objects to screen
@@ -20,19 +23,49 @@ void Game::draw() {
     }
 }
 
-// Function to update the game loop
+// Main logic to update the game loop
+void Game::update_loop() {
+    switch (state) {
+    case GameState::ACTIVE:
+        update_playing();
+        break;
+    case GameState::INACTIVE:
+        update_paused();
+        break;
+    }
+}
+
+// Function to update the game objects
 void Game::update() {
-    resolve_collisions();
-    ship.update();
-    delete_lasers();
-    if (asteroids.size() <= asteroid_limit) {
-        spawn_asteroid();
+    if (state == GameState::ACTIVE) {
+        resolve_collisions();
+        ship.update();
+        delete_lasers();
+        if (asteroids.size() <= asteroid_limit) {
+            spawn_asteroid();
+        }
+        for (auto &laser : ship.lasers) {
+            laser.update();
+        }
+        for (auto &asteroid : asteroids) {
+            asteroid.update();
+        }
     }
-    for (auto &laser : ship.lasers) {
-        laser.update();
+}
+
+// Function to update playing state
+void Game::update_playing() {
+    if (IsKeyPressed(KEY_P)) {
+        state = GameState::INACTIVE;
+    } else {
+        update();
     }
-    for (auto &asteroid : asteroids) {
-        asteroid.update();
+}
+
+// Function to update the paused screen
+void Game::update_paused() {
+    if (IsKeyPressed(KEY_ENTER)) {
+        state = GameState::ACTIVE;
     }
 }
 
@@ -96,7 +129,8 @@ void Game::spawn_asteroid() {
         break;
     }
 
-    // We track our spawn time and make sure it has at least passed the spawn interval
+    // We track our spawn time and make sure it has at least passed the spawn
+    // interval
     if (current_time - last_asteroid_spawn_time >= asteroid_spawn_interval) {
         // We set our spawn probability at 20%
         if (GetRandomValue(1, 10) <= 2) {
@@ -133,6 +167,11 @@ void Game::resolve_collisions() {
             } else {
                 ++it;
             }
+        }
+    }
+    for (auto &asteroid : asteroids) {
+        if (CheckCollisionRecs(asteroid.get_rect(), ship.get_rect())) {
+            --lives;
         }
     }
 }

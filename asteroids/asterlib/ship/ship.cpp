@@ -123,3 +123,5 @@ void Ship::fire_laser(float heading_x, float heading_y) {
     // We create a laser in place and store it in our vector
     lasers.emplace_back(pos, heading_x, heading_y, rotation);
 }
+
+Rectangle Ship::get_rect() { return Rectangle{pos.x, pos.y, size.x, size.y}; }
