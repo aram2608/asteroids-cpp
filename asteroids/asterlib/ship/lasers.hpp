@@ -13,6 +13,8 @@ struct Lasers {
     Vector2 pos;
     Vector2 size;
     int speed;
+    int screen_w;
+    int screen_h;
     float rotation;
     float heading_x;
     float heading_y;

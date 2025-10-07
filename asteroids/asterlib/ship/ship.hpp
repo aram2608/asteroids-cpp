@@ -14,6 +14,7 @@ struct Ship {
     void draw();
     void update();
     void keyboard(float delta);
+    void bounds_check();
     void fire_laser(float heading_x, float heading_y);
 
     float max_speed;

@@ -19,6 +19,7 @@ void Ship::draw() {
                      Color{255, 255, 255, 255});
 }
 void Ship::update() {
+    // We get the game's frame time
     float delta = GetFrameTime();
 
     // Catch keyboard events
@@ -28,22 +29,8 @@ void Ship::update() {
     pos.x += velocity.x * delta;
     pos.y += velocity.y * delta;
 
-    // We get the screen width and height for bounds checking
-    int screen_w = GetScreenWidth();
-    int screen_h = GetScreenHeight();
-
-    // We check the horizontal bounds
-    if (pos.x > screen_w) {
-        pos.x = 0;
-    } else if (pos.x < 0) {
-        pos.x = screen_w;
-    }
-    // We check the vertical bounds
-    if (pos.y > screen_h) {
-        pos.y = 0;
-    } else if (pos.y < 0) {
-        pos.y = screen_h;
-    }
+    // We check the ships bounds and upate position on screen
+    bounds_check();
 }
 
 void Ship::keyboard(float delta) {
@@ -114,6 +101,25 @@ void Ship::keyboard(float delta) {
     }
 }
 
+// Function to track the ships position and update position given a toroidal
+// screen
+void Ship::bounds_check() {
+    // We check the horizontal bounds
+    if (pos.x > screen_w) {
+        pos.x = 0;
+    } else if (pos.x < 0) {
+        pos.x = screen_w;
+    }
+    // We check the vertical bounds
+    if (pos.y > screen_h) {
+        pos.y = 0;
+    } else if (pos.y < 0) {
+        pos.y = screen_h;
+    }
+}
+
+// Function to fire lasers
 void Ship::fire_laser(float heading_x, float heading_y) {
+    // We create a laser in place and store it in our vector
     lasers.emplace_back(pos, heading_x, heading_y, rotation);
 }
