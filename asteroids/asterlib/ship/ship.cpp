@@ -42,10 +42,6 @@ void Ship::keyboard(float delta) {
         return v;
     };
 
-    if (IsKeyPressed(KEY_SPACE)) {
-        // TODO: Add lasers
-    }
-
     float thrust_target = 0.0f;
     if (IsKeyDown(KEY_UP)) {
         // Move forward
@@ -66,6 +62,11 @@ void Ship::keyboard(float delta) {
     // We need to convert rotation degrees into radians
     float rotation_rad = rotation * DEG2RAD;
 
+    if (IsKeyPressed(KEY_SPACE)) {
+        // TODO: Add lasers
+    }
+
+    // We calculate the heading given the radians of rotation
     float heading_x = std::sin(rotation_rad);
     float heading_y = -std::cos(rotation_rad);
 
@@ -78,19 +79,12 @@ void Ship::keyboard(float delta) {
         velocity.y = heading_y * thrust_target;
 
     } else {
-        // Decelerate by moving the current speed toward 0
+        // Decelerate by moving the current speed toward the floating speed
         float new_speed = approach(current_speed, flt_speed, accel * delta);
 
-        if (new_speed != 0.0f) {
-            // Re-normalize the existing velocity vector and scale it by the new
-            // speed
-            Vector2 current_direction = Vector2Normalize(
-                velocity); // Requires a vector library or implementation
-            velocity.x = current_direction.x * new_speed;
-            velocity.y = current_direction.y * new_speed;
-        } else {
-            // Stop the ship completely if speed is 0
-            velocity = {0.0f, 0.0f};
-        }
+        // We normalize the existing velocity vector and scale it
+        Vector2 current_direction = Vector2Normalize(velocity);
+        velocity.x = current_direction.x * new_speed;
+        velocity.y = current_direction.y * new_speed;
     }
 }
